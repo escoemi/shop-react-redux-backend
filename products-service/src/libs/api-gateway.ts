@@ -5,9 +5,9 @@ import { DEFAULT_HEADERS } from "src/utils/constants";
 type ValidatedAPIGatewayProxyEvent<S> = Omit<APIGatewayProxyEvent, 'body'> & { body: FromSchema<S> }
 export type ValidatedEventAPIGatewayProxyEvent<S> = Handler<ValidatedAPIGatewayProxyEvent<S>, APIGatewayProxyResult>
 
-export const formatJSONResponse = (response: Record<string, unknown>) => {
+export const formatJSONResponse = (response: Record<string, unknown>, statusCode:number=200) => {
   return {
-    statusCode: 200,
+    statusCode,
     headers:{
       ...DEFAULT_HEADERS
     },

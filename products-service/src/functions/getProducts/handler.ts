@@ -5,7 +5,7 @@ import { getAllProducts } from "src/services/ProductService";
 
 import schema from "./schema";
 
-const getProducts: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
+export const getProducts: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
   try {
     const products = await getAllProducts();
     return formatJSONResponse({
