@@ -1,26 +1,26 @@
 import type { AWS } from '@serverless/typescript';
-
 import getProducts from '@functions/getProducts';
 import getProductsById from '@functions/getProductsById';
 import createProduct from '@functions/createProduct';
-
-
+import type { AWS } from "@serverless/typescript";
+import getProducts from "@functions/getProducts";
+import getProductsById from "@functions/getProductsById";
 
 const serverlessConfiguration: AWS = {
   service: 'products-service-task-4',
   frameworkVersion: '3',
   plugins: ['serverless-esbuild', 'serverless-dotenv-plugin'],
   provider: {
-    name: 'aws',
-    runtime: 'nodejs14.x',
-    region:'us-east-2',
+    name: "aws",
+    runtime: "nodejs14.x",
+    region: "us-east-2",
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
     environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
     },
   },
   // import the function via paths
@@ -37,6 +37,10 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    webpack: {
+      webpackConfig:'webpack.config.js',
+      includeModule: true
+    }
   },
 };
 
