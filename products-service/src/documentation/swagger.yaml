@@ -1,0 +1,103 @@
+swagger: "2.0"
+info:
+  title: "Product Service API"
+  description: "Product service is a set of endpoints to GET Products information."
+  version: 1.0.0
+host: "njayf8942m.execute-api.us-east-2.amazonaws.com"
+basePath: /dev
+tags:
+- name: "Products"
+  description: "Everything that you should retrieve from Products"
+schemes:
+  - https
+paths:
+  /products:
+    get:
+      tags:
+        - "Products"
+      summary: Returns a list of products.
+      description: At the moment it return a list of products not paginated.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: An array of products
+          schema:
+            type: object
+            properties:
+              successful:
+                type: boolean
+                example: true
+              data:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    id:
+                      type: string
+                      example: test
+                    title:
+                      type: string
+                      example: Amazing Car
+                    price:
+                      type: integer
+                      example: 8888
+                    description:
+                      type: string
+                      example: Description of an amazing car
+                    count:
+                      type: integer
+                      example: 7
+  /products/{productId}:
+    get:
+      tags:
+        - "Products"
+      summary: Returns a list of products.
+      description: At the moment it return a list of products not paginated.
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          type: integer
+          minimum: 1
+          description: The ID of the product to return.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: An array of products
+          schema:
+            type: object
+            properties:
+              successful:
+                type: boolean
+                example: true
+              data:
+                  type: object
+                  properties: 
+                    id:
+                      type: string
+                      example: test
+                    title:
+                      type: string
+                      example: Amazing Car
+                    price:
+                      type: integer
+                      example: 8888
+                    description:
+                      type: string
+                      example: Description of an amazing car
+                    count:
+                      type: integer
+                      example: 7
+        404:
+          description: Not found object
+          schema:
+            type: object
+            properties:
+              successful:
+                type: boolean
+                example: false
+              message:
+                  type: string
+                  example: Product with the id asdasdas not found
