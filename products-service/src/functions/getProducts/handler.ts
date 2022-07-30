@@ -7,16 +7,17 @@ import schema from "./schema";
 
 export const getProducts: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
   try {
+    console.log(`getProducts has started with the arguments.`)
     const products = await getAllProducts();
     return formatJSONResponse({
       successful: true,
       data: products,
-    });
+    }, 200);
   } catch (e) {
     return formatJSONResponse({
       successful: false,
-      message: `Unexpected error happen`,
-    });
+      message: e.message || `Unexpected error happened trying to get all the products`,
+    }, e.status);
   }
 };
 

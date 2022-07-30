@@ -2,36 +2,39 @@ import type { ValidatedEventAPIGatewayProxyEvent } from "@libs/api-gateway";
 import { formatJSONResponse } from "@libs/api-gateway";
 import { middyfy } from "@libs/lambda";
 import { getProductById } from "src/services/ProductService";
+import { NotFoundProduct, UserInputError } from "src/utils/errors";
 
 import schema from "./schema";
 
 export const getProductsById: ValidatedEventAPIGatewayProxyEvent<
   typeof schema
 > = async (event) => {
-  const { id: productId = "" } = event.pathParameters;
-  if (!productId) {
+  try {
+    const { id: productId = "" } = event.pathParameters;
+    console.log(
+      `getProductById has started with the arguments. ProductID: ${productId}`
+    );
+    if (!productId) {
+      throw new UserInputError("productId");
+    }
+    const product = await getProductById(productId);
+    if (!product) {
+      throw new NotFoundProduct(productId);
+    }
+    return formatJSONResponse({
+      successful: true,
+      data: product,
+    }, 200);
+  } catch (e) {
     return formatJSONResponse(
       {
         successful: false,
-        message: `Request should have the id`,
+        message:
+          e.message || `Unexpected error happened trying to get the product`,
       },
-      403
+      e.status
     );
   }
-  const product = await getProductById(productId);
-  if (!product) {
-    return formatJSONResponse(
-      {
-        successful: false,
-        message: `Product with the id ${productId} not found`,
-      },
-      404
-    );
-  }
-  return formatJSONResponse({
-    successful: true,
-    data: product,
-  });
 };
 
 export const main = middyfy(getProductsById);

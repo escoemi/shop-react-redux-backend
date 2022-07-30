@@ -1,12 +1,15 @@
+import type { AWS } from '@serverless/typescript';
+import getProducts from '@functions/getProducts';
+import getProductsById from '@functions/getProductsById';
+import createProduct from '@functions/createProduct';
 import type { AWS } from "@serverless/typescript";
-
 import getProducts from "@functions/getProducts";
 import getProductsById from "@functions/getProductsById";
 
 const serverlessConfiguration: AWS = {
-  service: "products-service",
-  frameworkVersion: "3",
-  plugins: ["serverless-esbuild", "serverless-webpack"],
+  service: 'products-service-task-4',
+  frameworkVersion: '3',
+  plugins: ['serverless-esbuild', 'serverless-dotenv-plugin'],
   provider: {
     name: "aws",
     runtime: "nodejs14.x",
@@ -21,17 +24,17 @@ const serverlessConfiguration: AWS = {
     },
   },
   // import the function via paths
-  functions: { getProducts, getProductsById },
+  functions: { getProducts, getProductsById, createProduct },
   package: { individually: true },
   custom: {
     esbuild: {
       bundle: true,
       minify: false,
       sourcemap: true,
-      exclude: ["aws-sdk"],
-      target: "node14",
-      define: { "require.resolve": undefined },
-      platform: "node",
+      exclude: ['aws-sdk', 'pg-native'],
+      target: 'node14',
+      define: { 'require.resolve': undefined },
+      platform: 'node',
       concurrency: 10,
     },
     webpack: {
