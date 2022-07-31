@@ -7,7 +7,7 @@ import {
 
 const { REGION, BUCKET_NAME } = process.env;
 
-const importProductsFile = async (event) => {
+export const importProductsFile = async (event) => {
   const fileName = event.queryStringParameters.name;
 
   if (!fileName) {
