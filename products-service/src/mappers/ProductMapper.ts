@@ -9,3 +9,9 @@ export const mapFromProductStockDTOtoProduct = (
   price: productDTO.price,
   count: productDTO.count,
 });
+
+
+export const mapFromProductCSVDTOtoProduct=(productStringify:string)=>{
+  const product=JSON.parse(productStringify)
+  return {...product, count:+product["﻿count"], price:+product.price};
+}
