@@ -7,6 +7,7 @@ import {
 } from "src/entities/Product";
 import { mapFromProductStockDTOtoProduct } from "src/mappers/ProductMapper";
 import { UserInputError } from "src/utils/errors";
+import { publishSNSMessage } from "./SNSService";
 
 export const getAllProducts = async (): Promise<Product[]> => {
   const client = await getClient();
@@ -54,6 +55,14 @@ export const createProduct = async (product: Omit<Product, "id">) => {
   return { ...newProduct, ...newStock };
 };
 
+export const createMultipleProducts = async (
+  products: Omit<Product, "id">[]
+) => {
+  for (const product of products) {
+    await createProduct(product);
+  }
+};
+
 const validateProductInput = (product: Omit<Product, "id">) => {
   const invalidInputs = [];
   if (typeof product.title !== "string" || product.title.trim().length === 0) {
@@ -74,4 +83,15 @@ const validateProductInput = (product: Omit<Product, "id">) => {
   if (invalidInputs.length) {
     throw new UserInputError(...invalidInputs);
   }
+};
+
+export const publishProductsViaSNS = async (
+  products: Omit<Product, "id">[]
+) => {
+  return publishSNSMessage("Products uploaded", JSON.stringify(products), {
+    productCount: {
+      DataType: "Number",
+      StringValue: JSON.stringify(products.length),
+    },
+  });
 };

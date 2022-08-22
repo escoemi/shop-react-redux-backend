@@ -31,6 +31,11 @@ const serverlessConfiguration: AWS = {
         Action: ["s3:*"],
         Resource: ["arn:aws:s3:::react-aws-import-service/*"],
       },
+      {
+        Effect: 'Allow',
+        Action: ['sqs:*'],
+        Resource: ['arn:aws:sqs:us-east-2:016632548581:catalogItemsQueue'],
+      },
     ],
   },
   // import the function via paths
