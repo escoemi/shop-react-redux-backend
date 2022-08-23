@@ -15,7 +15,15 @@ export default {
             }
           }
         },
+        authorizer:{
+          name: 'basicAuthorizer',
+          arn: process.env.AUTHORIZER_ARN,
+          resultTtlInSeconds: 0,
+          identitySource: 'method.request.header.Authorization',
+          type: 'token',
+        }
       },
+
     },
   ],
 };

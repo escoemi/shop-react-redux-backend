@@ -1,4 +1,3 @@
-import {middyfy} from "@libs/lambda";
 import { Product } from "src/entities/Product";
 import { mapFromProductCSVDTOtoProduct } from "src/mappers/ProductMapper";
 import { createMultipleProducts, publishProductsViaSNS } from "src/services/ProductService";
@@ -15,6 +14,4 @@ export const catalogBatchProcess = async (event) => {
         console.log('error: ', error);
     } 
 };
-
-export const main = middyfy(catalogBatchProcess);
 
